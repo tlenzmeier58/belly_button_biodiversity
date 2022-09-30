@@ -45,7 +45,45 @@ function DrawBargraph(sampleID)
 
 function DrawBubblechart(sampleID)
 {
-    console.log(`DrawBubblechart(${sampleID})`);
+    // console.log(`DrawBubblechart(${sampleID})`);
+        d3.json(url).then(data =>{
+            let samples = data.samples;
+            let resultArray = samples.filter(s => s.id == sampleID);
+            let result = resultArray[0];
+
+            let otu_ids = result.otu_ids;
+            let otu_labels = result.otu_labels;
+            let sample_values = result.sample_values;
+
+            //Create a trace
+            let bubbleData = {
+                x: otu_ids,
+                y: sample_values,
+                text: otu_labels,
+                mode: "markers",
+                marker: {
+                    size: sample_values,
+                    color: otu_ids,
+                    colorscale: "Earth"
+                }
+            }
+            // Put the trace into an array
+            let bubbleArray = [bubbleData];
+
+            // Create a layout object
+            let bubbleLayout = {
+                title: "Bacteria Cultures Per Sample",
+                margin: {t: 30},
+                hovermode: "closest",
+                xaxis: { title: "OTU ID"}
+            }
+            // Call Plotly
+            Plotly.newPlot("bubble", bubbleArray, bubbleLayout);
+
+        })
+
+
+
 }
 
 function ShowMetaData(sampleID)
