@@ -107,13 +107,13 @@ function DrawGauge(sampleID)
         let resultArray = metadata.filter(m => m.id == sampleID);
         let result = resultArray[0];
 
-        let wfreq = parseInt(resultArray.wfreq)
-
+        let wfreq = parseInt(result.wfreq)
+    console.log(`Wash(${wfreq})`);
         // Create a trace object
 
         let gaugeData = [
             {
-                domain: { x: [0,5], y:[0,1]},
+                domain: { x: [0,1], y:[0,1]},
                 value: wfreq,
                 title: {text: "Washing Frequency"},
                 type: "indicator",
@@ -122,6 +122,7 @@ function DrawGauge(sampleID)
                     reference: 4,
                     increasing: {color:'green'}
                 },
+
                 gauge: {
                     axis: {range:[0,9], tickwidth: 1, tickcolor:"darkblue"},
                     bar: {color:'blue'},
@@ -136,21 +137,20 @@ function DrawGauge(sampleID)
                         value: 9
                     }
                 },
-                bgcolor: "Lavender",
+               // bgcolor: "Lavender",
             }
         ];
         // Put the trace into an array
-        let gaugeArray = [gaugeData];
+        //let gaugeArray = [gaugeData];
 
         let layout = {
             title: "<b>Belly button Washing Frequency</b> <br>Scrubs Per Week</br>",
-            width: 400,
+            width: 600,
             height: 470,
             margin: {t:25, r:25, L:25, b:25},
-            paper_bgcolor: "Lavender",
             font: {color:"darkblue", family:"Arial"}
         };
-        Plotly.newPlot('gauge', gaugeArray, layout);
+        Plotly.newPlot('gauge', gaugeData, layout);
 
     })
 }
