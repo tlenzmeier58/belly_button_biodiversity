@@ -86,7 +86,7 @@ function DrawBubblechart(sampleID)
 
 function ShowMetaData(sampleID)
 {
-    //console.log(`ShowMetaData(${sampleID})`);
+    console.log(`ShowMetaData(${sampleID})`);
     d3.json(url).then(data => {
         let metadata = data.metadata;
         let demoPanel = d3.select('#sample-metadata')
@@ -95,27 +95,12 @@ function ShowMetaData(sampleID)
         Object.entries(filteredData).forEach(([key, value]) => {
             demoPanel.append("h6").text(`${key.toUpperCase()}:${value}`);
         } )
-    
-    })
-    }
-
-function DrawGauge(sampleID)
-{
-    console.log(`Draw Gauge(${sampleID})`);
-    d3.json(url).then(data => {
-        let metadata = data.metadata;
-        let resultArray = metadata.filter(m => m.id == sampleID);
-        let result = resultArray[0];
-
-        let wfreq = parseInt(resultArray.wfreq)
-
-        // Create a trace object
-
+        
         let gaugeData = [
             {
-                domain: { x: [0,5], y:[0,1]},
-                value: wfreq,
-                title: {text: "Washing Frequency"},
+                domain: { x: [0,1], y:[0,1]},
+                value: metadata.wfreq,
+                text: metadata.wfreq,
                 type: "indicator",
                 mode: "gauge+number+delta",
                 delta: {
@@ -126,9 +111,8 @@ function DrawGauge(sampleID)
                     axis: {range:[0,9], tickwidth: 1, tickcolor:"darkblue"},
                     bar: {color:'blue'},
                     steps: [
-                        {range:[0,4], color:"red"},
-                        {range:[4,9], color: "green"}
-
+                        {range: [0,4], color:"red"},
+                        {ranage: [4,9], color:"green"}
                     ],
                     threshold: {
                         line: {color: "grey", width:4},
@@ -139,22 +123,18 @@ function DrawGauge(sampleID)
                 bgcolor: "Lavender",
             }
         ];
-        // Put the trace into an array
-        let gaugeArray = [gaugeData];
-
         let layout = {
             title: "<b>Belly button Washing Frequency</b> <br>Scrubs Per Week</br>",
-            width: 400,
-            height: 470,
+            width: 200,
+            height: 370,
             margin: {t:25, r:25, L:25, b:25},
             paper_bgcolor: "Lavender",
             font: {color:"darkblue", family:"Arial"}
         };
-        Plotly.newPlot('gauge', gaugeArray, layout);
-
+        Plotly.newPlot('gauge', data, layout);
+    
     })
-}
-
+    }
 
 function optionChanged(sampleID)
 {
@@ -162,7 +142,7 @@ function optionChanged(sampleID)
     DrawBargraph(sampleID);
     DrawBubblechart(sampleID);
     ShowMetaData(sampleID);
-    DrawGauge(sampleID);
+    //DrawGauge(sampleID);
 }
 
 function InitDashboard()
